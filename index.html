@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сайт з карткою продукту</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            background-image: url('https://plus.unsplash.com/premium_photo-1722100465381-a6b9ad3cb996?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Додавання заднього фону */
+            background-size: cover; /* Заповнення фону */
+            background-position: center; /* Центрування фону */
+        }
+
+        header {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            width: 100%; /* Хедер на всю ширину */
+            box-sizing: border-box;
+        }
+
+        header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            margin-left: 15px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Контейнер для кнопок */
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            margin-left: auto; /* Вирівнювання вправо */
+        }
+
+        .login-button, .cart-button {
+            padding: 10px 15px;
+            background-color: white;
+            color: #007BFF;
+            border: 2px solid white;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+
+        .login-button:hover, .cart-button:hover {
+            background-color: #0056b3;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        /* Мобільна кнопка-гамбургер */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px 0;
+        }
+
+        /* Випадаюче меню */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background-color: #007BFF;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .mobile-nav a {
+            padding: 10px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-bottom: 1px solid white;
+        }
+
+        .mobile-nav a:hover {
+            background-color: #0056b3;
+        }
+         @media (max-width: 960px) {
+            /* Картки в дві колонки для планшетів */
+            .product-card {
+                flex: 1 1 calc(50% - 20px);
+            }
+        }
+        /* Стилі для мобільних пристроїв */
+        @media (max-width: 768px) {
+            nav {
+                display: none; /* Сховати навігацію */
+            }
+
+            .hamburger {
+                display: flex;
+            }
+            
+            /* Картки в одну колонку для мобільних */
+            .product-card {
+    flex: 1 1 100% !important;
+}
+
+        }
+
+        /* Стилі для контенту та карток */
+        .content-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto; /* Центрування контенту */
+        }
+
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-card {
+            flex: 1 1 calc(30% - 20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .product-card h2 {
+            margin: 15px 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .product-card p {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .product-card .price {
+            font-weight: bold;
+            font-size: 20px;
+            color: #007BFF;
+            margin: 10px 0;
+        }
+
+        .product-card button {
+            padding: 12px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .product-card button:hover {
+            background-color: #0056b3;
+        }
+
+        .label {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #007BFF;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://images.unsplash.com/photo-1723637984217-a0c011d6adfa?q=80&w=1979&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Сайт іконка">
+    
+    <!-- Кнопка-гамбургер для мобільного меню -->
+    <div class="hamburger" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    
+    <!-- Навігаційне меню -->
+    <nav>
+        <a href="#">Головна</a>
+        <a href="#">Продукти</a>
+        <a href="#">Контакти</a>
+    </nav>
+
+    <!-- Мобільне меню -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="#">Головна</a>
+        <a href="#">Продукти</a>
+        <a href="#">Контакти</a>
+    </div>
+
+    <div class="header-buttons">
+        <button class="cart-button">Кошик</button>
+        <button class="login-button">Вхід</button>
+    </div>
+</header>
+
+<main class="content-container">
+    <section class="product-grid">
+        <!-- Product cards go here -->
+    </section>
+</main>
+
+<script>
+    function toggleMenu() {
+        const mobileNav = document.getElementById('mobile-nav');
+        mobileNav.style.display = mobileNav.style.display === 'flex' ? 'none' : 'flex';
+    }
+</script>
+<main class="content-container">
+    <section class="product-grid">
+        <article class="product-card">
+            <img src="https://images.unsplash.com/photo-1722240727349-d3de838f3630?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Продукт">
+            <h2>Цуценя золотистого ретривера</h2>
+            <p>Майк, 2 місяці.</p>
+             <div class="price-and-button">
+        <div class="price">Ціна: 500 грн</div>
+            <button>Додати до кошика</button>
+        </article>
+
+        <article class="product-card">
+            <img src="https://images.unsplash.com/photo-1671551348876-b665717b0226?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Продукт">
+            <h2>Щеня лабрадора</h2>
+            <p>Рей, 3 місяці.</p>
+             <div class="price-and-button">
+        <div class="price">Ціна: 500 грн</div>
+            <button>Додати до кошика</button>
+        </article>
+
+        <article class="product-card">
+            <img src="https://plus.unsplash.com/premium_photo-1707410050552-e94a738102a1?q=80&w=1900&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Продукт">
+            <h2>Йорк</h2>
+            <p>Роксі, 4 місяці.</p>
+             <div class="price-and-button">
+        <div class="price">Ціна: 500 грн</div>
+            <button>Додати до кошика</button>
+        </article>
+
+        <article class="product-card">
+            <div class="label">New pet</div>
+            <img src="https://images.unsplash.com/photo-1681008570032-abdfcb23f875?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Продукт">
+            <h2>Бігль</h2>
+            <p>Сем, 5 місяців.</p>
+             <div class="price-and-button">
+        <div class="price">Ціна: 500 грн</div>
+            <button>Додати до кошика</button>
+        </article>
+    </section>
+</main>
+
+</body>
+</html>
